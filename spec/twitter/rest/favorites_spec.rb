@@ -50,6 +50,34 @@ describe Twitter::REST::Favorites do
         expect(favorites.first.user.id).to eq(7_505_382)
       end
     end
+    context 'response body is nil' do
+      before do
+        stub_get('/1.1/favorites/list.json').to_return(:body => nil, :headers => {:content_type => 'application/json; charset=utf-8'})
+      end
+      it 'requests the correct resource' do
+        @client.favorites
+        expect(a_get('/1.1/favorites/list.json')).to have_been_made
+      end
+      it 'returns an empty array' do
+        favorites = @client.favorites
+        expect(favorites).to be_an Array
+        expect(favorites).to be_empty
+      end
+    end
+    context 'response body is all whitespace' do
+      before do
+        stub_get('/1.1/favorites/list.json').to_return(:body => '    ', :headers => {:content_type => 'application/json; charset=utf-8'})
+      end
+      it 'requests the correct resource' do
+        @client.favorites
+        expect(a_get('/1.1/favorites/list.json')).to have_been_made
+      end
+      it 'returns an empty array' do
+        favorites = @client.favorites
+        expect(favorites).to be_an Array
+        expect(favorites).to be_empty
+      end
+    end
   end
 
   describe '#unfavorite' do

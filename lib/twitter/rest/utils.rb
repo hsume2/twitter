@@ -93,7 +93,17 @@ module Twitter
       # @param options [Hash]
       # @param klass [Class]
       def perform_request_with_objects(request_method, path, options, klass)
-        perform_request(request_method, path, options).collect do |element|
+        result = perform_request(request_method, path, options)
+        unless result.respond_to?(:collect)
+          @logger ||= begin
+            require 'logger'
+            ::Logger.new(STDOUT)
+          end
+          @logger.info "[#{self.class.name}##{__method__}] #{request_method}, #{path}, #{result.inspect}"
+
+          return []
+        end
+        result.collect do |element|
           klass.new(element)
         end
       end
