@@ -99,7 +99,7 @@ module Twitter
             require 'logger'
             ::Logger.new(STDOUT)
           end
-          @logger.info "[#{self.class.name}##{__method__}] #{request_method}, #{path}, #{result.inspect}"
+          @logger.info "[#{self.class.name}##{__method__}] #{request_method}, #{path}, #{options.inspect}, #{result.inspect}"
 
           return []
         end
