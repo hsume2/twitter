@@ -39,3 +39,9 @@ Style/SpaceInsideHashLiteralBraces:
 
 Style/TrailingComma:
   EnforcedStyleForMultiline: 'comma'
+
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+
+Style/ParallelAssignment:
+  Enabled: false
