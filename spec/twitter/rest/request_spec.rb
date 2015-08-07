@@ -33,5 +33,10 @@ describe Twitter::REST::Request do
       allow(@client).to receive(:connection).and_raise(JSON::ParserError.new('unexpected token'))
       expect { @request.perform }.to raise_error(Twitter::Error)
     end
+    it 'raises error for invalid status code' do
+      stub_post('/1.1/statuses/update.json').with(:body => {:status => 'Update'}).to_return(:headers => {:content_type => 'application/json; charset=utf-8'}, :status => 303)
+      expect { @client.update('Update') }.to raise_error
+      expect(a_post('/1.1/statuses/update.json').with(:body => {:status => 'Update'})).to have_been_made
+    end
   end
 end

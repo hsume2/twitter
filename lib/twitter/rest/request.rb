@@ -37,6 +37,13 @@ module Twitter
           raise(Twitter::Error.new(error))
         end
         @rate_limit = Twitter::RateLimit.new(response.response_headers)
+        if response.body.nil?
+          @logger ||= begin
+            require 'logger'
+            ::Logger.new(STDOUT)
+          end
+          @logger.info "[#{self.class.name}##{__method__}] #{@request_method}, #{@uri.to_s}, #{@options.inspect}, #{response.status}"
+        end
         response.body
       end
     end
